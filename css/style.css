@@ -1,0 +1,38 @@
+h1{
+    font-size:20px;
+    text-align: center;
+}
+
+header{
+    margin-bottom: 20px;
+}
+
+main{
+    display: inline-block;
+    margin: 20px auto;
+}
+
+figure{
+    border: 1px solid black;
+    cursor: pointer;
+    display: inline-block;
+    height: 400px;
+    margin-right: 50px;
+    position: relative;
+    width: 300px;
+}
+
+img{
+    display: block;
+    height: 300px;
+    position: absolute;
+    margin: auto;
+    width: 300px;
+}
+
+figcaption{
+    bottom: 0;
+    display: block;
+    left: 50%;
+    position: absolute;
+}
