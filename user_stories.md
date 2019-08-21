@@ -16,7 +16,9 @@
 
 ##As a user, I would like to...
     - be able to see the images clearly.
+    - be able to see the name of the items
     - have a fun and easy experience.
+    
     
 
 

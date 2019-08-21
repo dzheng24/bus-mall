@@ -1,38 +1,49 @@
+body{
+    background-color: olive;
+}
+
 h1{
-    font-size:20px;
+    font-size:40px;
     text-align: center;
 }
 
+h2{
+    display: inline-block;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
 header{
+    color: white;
+    font-family: cursive;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 main{
-    display: inline-block;
     margin: 20px auto;
+    text-align: center;
+    width:100%;
+}
+
+
+img{
+    cursor: pointer;
+    display: inline-block;
+    height: 300px;
+    margin-left: 20px;
+    width: 300px;
 }
 
 figure{
-    border: 1px solid black;
-    cursor: pointer;
     display: inline-block;
-    height: 400px;
-    margin-right: 50px;
-    position: relative;
-    width: 300px;
-}
-
-img{
-    display: block;
-    height: 300px;
-    position: absolute;
-    margin: auto;
-    width: 300px;
 }
 
 figcaption{
-    bottom: 0;
-    display: block;
-    left: 50%;
-    position: absolute;
+    background-color: darkgray;
+    height: 30px;
+    font-size: 20px;
+    margin-left: 20px;
+    padding: 10px;
+    
 }
+
