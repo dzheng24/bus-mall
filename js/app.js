@@ -132,7 +132,7 @@ function showRandomImages(){
   pageViews++;
   if(pageViews > 24){
     container.removeEventListener('click',clickHandler);
-    renderResults();
+    makeChart();
   }
   console.log(pageViews);
 }
@@ -151,23 +151,38 @@ function getRandomUniqueImage(){
   return found;
 }
 
-//function to render results
-function renderResults(){
-  document.getElementById('image-container').innerHTML = '';
-  var section = document.getElementById('render-results');
+
+
+//function to render chart
+function makeChart(){
+  var ctx = document.getElementById('chart').getContext('2d');
+  var labels = [];
+  var data = [];
+  var colors = [];
   for (var i = 0; i < allProducts.length; i++){
-    var products = allProducts[i];
-    var title = document.createElement('h3');
-    title.textContent = products.name;
-    section.appendChild(title);
-    var list = document.createElement('ul');
-    var li = document.createElement('li');
-    li.textContent = 'clicks: ' + products.numClicks + ' views: ' + products.numViews;
-    // li.textContent = products.numViews;
-    list.appendChild(li);
-    title.appendChild(list);
+    labels.push(allProducts[i].name);
+    data.push((allProducts[i].numClicks / allProducts[i].numViews)*100);
+    var randomColorCode = '#' + Math.floor(Math.random()*16777215).toString(16);
+    colors.push(randomColorCode);
   }
+
+  var chart = new Chart (ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Your Bus-Mall Interests',
+        backgroundColor: colors,
+        borderColor: colors,
+        borderWidth: 1,
+        data: data,
+      }]
+    },
+    options: {},
+  });
 }
+
+
 
 
 

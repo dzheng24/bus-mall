@@ -22,7 +22,6 @@ header{
 main{
     margin: 20px auto;
     text-align: center;
-    width:100%;
 }
 
 
@@ -45,5 +44,10 @@ figcaption{
     margin-left: 20px;
     padding: 10px;
     
+}
+
+canvas{
+    height:400px;
+    width: 400px;
 }
 
