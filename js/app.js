@@ -1,17 +1,11 @@
 'use strict';
 
-var lastShown = [];
-var totalClicks = 0;
+var container = document.getElementById('image-container');
+var previousSet = {};
+var thisSet = {};
+var allProducts = [];
+var pageViews = 0;
 
-var imgOne = document.getElementById('img-one');
-var imgTwo = document.getElementById('img-two');
-var imgThree = document.getElementById('img-three');
-
-
-// var imgOne = document.createElement('img');
-// // imgOne.textContent = 
-// var captionOne = document.createElement('figcaption');
-// imgOne.appendChild(captionOne);
 
 //create an array to hold all the images
 var imagesToBeLoaded = [
@@ -39,14 +33,24 @@ var imagesToBeLoaded = [
 
 //create a constructor function
 function Product (name,url){
+  this.id = Math.random();
   this.name = name;
   this.src = url;
-  Product.list.push(this);
+  this.numClicks = 0;
+  this.numViews = 0;
+  allProducts.push(this);
 }
-Product.list = [];
+
+Product.prototype.updateViews = function (){
+  this.numViews++;
+};
+
+Product.prototype.updateClicks = function (){
+  this.numClicks++;
+};
 
 //create a function to load the images
-function loadImages(){
+function loadProducts(){
   new Product('bag','img/assets/bag.jpg');
   new Product('banana','img/assets/banana.jpg');
   new Product('bathrom','img/assets/bathroom.jpg');
@@ -68,23 +72,109 @@ function loadImages(){
   new Product('water-can','img/assets/water-can.jpg');
   new Product('wine-glass','img/assets/wine-glass.jpg');
 }
-loadImages();
 
-//create a random function to display 3 images at once
+
+//create a random function
 function randomImage(){
-  var randomNumber = Math.floor(Math.random() * Product.list.length);
-
-  imgOne.src = Product.list[randomNumber].src;
-  imgTwo.src = Product.list[randomNumber].src;
-  imgThree.src = Product.list[randomNumber].src;
-
-  captionOne.textContent = Product.list[randomNumber].name;
+  return Math.floor(Math.random() * allProducts.length);
 }
 randomImage();
 
-//change what's being shown after a click
+function setUpImageContainer(){
+  for (var i = 1; i <= 3; i++){
+    var figure = document.createElement('figure');
+    var caption = document.createElement('figcaption');
+    var img = document.createElement('img');
 
-//update how many times it got shown
+    caption.id = `caption-${i}`;
+    caption.textContent = '';
+    img.id = `image-${i}`;
+    img.src = allProducts[(randomImage())].src;
+    figure.appendChild(img);
+    figure.appendChild(caption);
+    container.appendChild(figure);
+  }
+}
 
-//update how many times it got clicked
+
+function setUpListener(){
+  container.addEventListener('click', clickHandler);
+}
+
+function clickHandler(e){
+  var imageName = e.target.alt;
+  for (var i = 0; i < allProducts.length; i++){
+    if (allProducts[i].name === imageName){
+      allProducts[i].updateClicks();
+    }
+  }
+  showRandomImages();
+}
+
+
+function showRandomImages(){
+  thisSet = {};
+  for (var i = 1; i <= 3; i++){
+    var id = `image-${i}`;
+    var img = document.getElementById(id);
+    var imgCaption = document.getElementById(`caption-${i}`);
+
+    var imageObject = getRandomUniqueImage();
+
+    img.src = imageObject.src;
+    img.alt = imageObject.name;
+    imgCaption.textContent = imageObject.name;
+
+
+  }
+
+  previousSet = thisSet;
+  pageViews++;
+  if(pageViews > 24){
+    container.removeEventListener('click',clickHandler);
+    renderResults();
+  }
+  console.log(pageViews);
+}
+
+
+function getRandomUniqueImage(){
+  var found = false;
+  while (!found){
+    var n = Math.floor(Math.random()*allProducts.length);
+    if ((!thisSet[n]) && !previousSet[n]){
+      found = allProducts[n];
+      allProducts[n].updateViews();
+      thisSet[n] = true;
+    }
+  }
+  return found;
+}
+
+//function to render results
+function renderResults(){
+  document.getElementById('image-container').innerHTML = '';
+  var section = document.getElementById('render-results');
+  for (var i = 0; i < allProducts.length; i++){
+    var products = allProducts[i];
+    var title = document.createElement('h3');
+    title.textContent = products.name;
+    section.appendChild(title);
+    var list = document.createElement('ul');
+    var li = document.createElement('li');
+    li.textContent = 'clicks: ' + products.numClicks + ' views: ' + products.numViews;
+    // li.textContent = products.numViews;
+    list.appendChild(li);
+    title.appendChild(list);
+  }
+}
+
+
+
+
+
+loadProducts();
+setUpImageContainer();
+setUpListener();
+showRandomImages();
 
