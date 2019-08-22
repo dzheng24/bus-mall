@@ -6,30 +6,15 @@ var thisSet = {};
 var allProducts = [];
 var pageViews = 0;
 
-
-//create an array to hold all the images
-var imagesToBeLoaded = [
-  'bag',
-  'banana',
-  'bathroom',
-  'boots',
-  'breakfast',
-  'bubblegum',
-  'chair',
-  'cthulhu',
-  'dog-duck',
-  'dragon',
-  'pen',
-  'pet-sweep',
-  'scissors',
-  'shark',
-  'sweep',
-  'tauntaun',
-  'unicorn',
-  'usb',
-  'water-can',
-  'wine-glass'
-];
+function bringBackData () {
+  if(localStorage.productsString){
+    allProducts = JSON.parse(localStorage.getItem('productsString'));
+    console.log(allProducts);
+  }
+  else (loadProducts());
+  console.log('loading');
+}
+bringBackData();
 
 //create a constructor function
 function Product (name,url){
@@ -40,6 +25,7 @@ function Product (name,url){
   this.numViews = 0;
   allProducts.push(this);
 }
+
 
 Product.prototype.updateViews = function (){
   this.numViews++;
@@ -80,6 +66,7 @@ function randomImage(){
 }
 randomImage();
 
+
 function setUpImageContainer(){
   for (var i = 1; i <= 3; i++){
     var figure = document.createElement('figure');
@@ -106,6 +93,7 @@ function clickHandler(e){
   for (var i = 0; i < allProducts.length; i++){
     if (allProducts[i].name === imageName){
       allProducts[i].updateClicks();
+      sendToStorage();
     }
   }
   showRandomImages();
@@ -118,13 +106,11 @@ function showRandomImages(){
     var id = `image-${i}`;
     var img = document.getElementById(id);
     var imgCaption = document.getElementById(`caption-${i}`);
-
     var imageObject = getRandomUniqueImage();
 
     img.src = imageObject.src;
     img.alt = imageObject.name;
     imgCaption.textContent = imageObject.name;
-
 
   }
 
@@ -134,7 +120,6 @@ function showRandomImages(){
     container.removeEventListener('click',clickHandler);
     makeChart();
   }
-  console.log(pageViews);
 }
 
 
@@ -149,6 +134,11 @@ function getRandomUniqueImage(){
     }
   }
   return found;
+}
+
+function sendToStorage(){
+  var allProductsString = JSON.stringify(allProducts);
+  localStorage.setItem('productsString',allProductsString);
 }
 
 
@@ -166,6 +156,7 @@ function makeChart(){
     colors.push(randomColorCode);
   }
 
+
   var chart = new Chart (ctx, {
     type: 'bar',
     data: {
@@ -182,14 +173,10 @@ function makeChart(){
   });
 }
 
-
-
-
-
+//localStorage
 
 
 loadProducts();
 setUpImageContainer();
 setUpListener();
 showRandomImages();
-
