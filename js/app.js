@@ -12,7 +12,6 @@ function bringBackData () {
     console.log(allProducts);
   }
   else (loadProducts());
-  console.log('loading');
 }
 bringBackData();
 
@@ -167,13 +166,12 @@ function makeChart(){
         borderColor: colors,
         borderWidth: 1,
         data: data,
+        fontColor: 'white'
       }]
     },
-    options: {},
   });
 }
 
-//localStorage
 
 
 loadProducts();
